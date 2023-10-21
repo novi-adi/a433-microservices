@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  kubernetes-backend:
+  karsajobs:
     docker:
       - image: golang:latest
 
@@ -17,8 +17,7 @@ jobs:
 
       - run:
           name: test-app
-          command: |
-            command: go test -v -short --count=1 $(go list ./...)
+          command: go test -v -short --count=1 $(go list ./...)
 
       - run:
           name: build-app-karsajobs
@@ -28,40 +27,12 @@ jobs:
             # Push image ke GitHub Packages
             docker push ghcr.io/novi-adi/novi-adi/karsajobs:latest
 
-  kubernetes-frontend:
-    docker:
-      - image: node:14
-
-    steps:
-      - checkout
-
-      - run:
-          name: lint-dockerfile
-          command: |
-            curl -sL -o /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64
-            chmod +x /usr/local/bin/hadolint
-            hadolint Dockerfile
-
-      - run:
-          name: build-app-karsajobs-ui
-          command: |
-            # Build image Docker
-            docker build -t ghcr.io/novi-adi/novi-adi/karsajobs-ui:latest .
-            # Push image ke GitHub Packages
-            docker push ghcr.io/novi-adi/novi-adi/karsajobs-ui:latest
-
 workflows:
   version: 2
   build:
     jobs:
-      - kubernetes-backend:
+      - karsajobs:
           filters:
             branches:
               only:
-                - kubernetes
-
-      - kubernetes-frontend:
-          filters:
-            branches:
-              only:
-                - kubernetes
+                - karsajobs
