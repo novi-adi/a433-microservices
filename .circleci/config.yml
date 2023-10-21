@@ -27,10 +27,8 @@ jobs:
       - run:
           name: build-app-karsajobs
           command: |
-            # Build image Docker
-            docker build -t ghcr.io/novi-adi/novi-adi/karsajobs:latest .
-            # Push image ke GitHub Packages
-            docker push ghcr.io/novi-adi/novi-adi/karsajobs:latest
+            chmod +x build_push_image_karsajobs.sh
+            ./build_push_image_karsajobs.sh
 
 workflows:
   version: 2
