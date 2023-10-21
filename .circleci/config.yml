@@ -34,8 +34,4 @@ workflows:
   version: 2
   build:
     jobs:
-      - karsajobs:
-          filters:
-            branches:
-              only:
-                - karsajobs
+      - build
