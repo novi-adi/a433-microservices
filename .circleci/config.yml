@@ -25,7 +25,7 @@ jobs:
             chmod +x build_push_image_karsajobs.sh
             ./build_push_image_karsajobs.sh
 
-wworkflows:
+workflows:
   version: 2
   build:
     jobs:
