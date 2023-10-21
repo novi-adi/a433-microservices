@@ -1,0 +1,42 @@
+apiVersion: v1  # Versi API Kubernetes yang digunakan (v1).
+kind: PersistentVolume  # Jenis objek Kubernetes yang akan dibuat adalah PersistentVolume (PV).
+
+metadata:
+  labels:
+    app: mongodb  # Label aplikasi yang diberikan pada PV.
+    tier: database  # Label tier yang diberikan pada PV.
+  name: mongodb-pv  # Nama Persistent Volume (PV).
+
+spec:
+  accessModes:
+    - ReadWriteOnce  # Mode akses PV (dapat dibaca dan ditulis oleh satu node).
+  capacity:
+    storage: 3Gi  # Kapasitas penyimpanan yang dialokasikan untuk PV (3 GiB).
+  hostPath:
+    path: '/data/db'  # Path pada node host tempat PV akan disimpan.
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - minikube  # PV hanya akan diberikan ke node dengan nama "minikube".
+  storageClassName: manual  # Nama kelas penyimpanan yang digunakan untuk PV.
+
+apiVersion: v1  # Versi API Kubernetes yang digunakan (v1).
+kind: PersistentVolumeClaim  # Jenis objek Kubernetes yang akan dibuat adalah PersistentVolumeClaim (PVC).
+
+metadata:
+  labels:
+    app: mongodb  # Label aplikasi yang diberikan pada PVC.
+    tier: database  # Label tier yang diberikan pada PVC.
+  name: mongodb-pvc  # Nama Persistent Volume Claim (PVC).
+
+spec:
+  accessModes:
+    - ReadWriteOnce  # Mode akses PVC (dapat dibaca dan ditulis oleh satu node).
+  resources:
+    requests:
+      storage: 3Gi  # Permintaan kapasitas penyimpanan untuk PVC (3 GiB).
+  storageClassName: manual  # Nama kelas penyimpanan yang diklaim oleh PVC.

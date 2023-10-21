@@ -1,0 +1,18 @@
+apiVersion: v1 # Versi API Kubernetes yang digunakan untuk objek Service (v1).
+kind: Service # Jenis objek Kubernetes yang akan dibuat adalah Service.
+
+metadata:
+  name: karsajobs-ui-service # Nama unik untuk objek Service, dalam hal ini "karsajobs-ui-service."
+  labels:
+    app: karsajobs-ui # Label yang diberikan pada Service, sesuai dengan label Pod yang terkait.
+
+spec:
+  type: NodePort # Tipe Service yang akan dibuat adalah NodePort, memungkinkan akses eksternal ke pod.
+  selector:
+    app: karsajobs-ui # Selector yang akan cocok dengan label Pod "app: karsajobs-ui."
+
+  ports:
+    - protocol: TCP # Menentukan protokol yang akan digunakan (TCP).
+      port: 80 # Port yang akan digunakan oleh Service (port 80).
+      targetPort: 8000 # Port yang digunakan oleh pod "karsajobs-ui."
+      nodePort: 30100 # NodePort yang digunakan untuk mengakses Service dari luar cluster Kubernetes.

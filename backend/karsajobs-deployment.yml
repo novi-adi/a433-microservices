@@ -1,0 +1,45 @@
+apiVersion: apps/v1 # Menentukan versi API Kubernetes dan jenis objek (Deployment)
+kind: Deployment # Menentukan jenis objek (Deployment)
+
+metadata:
+  name: karsajobs-deployment # Menentukan metadata untuk Deployment dengan nama "karsajobs-deployment"
+
+spec:
+  replicas: 1 # Menentukan spesifikasi untuk Deployment, termasuk jumlah replika (1 pod)
+
+  selector:
+    matchLabels:
+      app: karsajobs # Menentukan selektor untuk memilih pod berdasarkan label "app: karsajobs"
+
+  template:
+    metadata:
+      labels:
+        app: karsajobs # Menentukan template pod yang akan diatur oleh Deployment
+
+    spec:
+      containers:
+        - name: karsajobs # Menentukan wadah (container) dalam pod dengan nama "karsajobs"
+
+          image: ghcr.io/novi-adi/novi-adi/karsajobs:latest # Mengatur image Docker yang akan digunakan, diambil dari Github Packages
+          imagePullPolicy: Always # Mengatur kebijakan penarikan gambar "Always"
+
+          ports:
+            - containerPort: 8080 # Mengatur port yang akan terbuka di dalam container (8080)
+
+          env:
+            - name: APP_PORT # Environtment variable untuk port aplikasi
+              value: '8080' # Port 8080
+            - name: MONGO_HOST # Environtment variable untuk host MongDB
+              value: mongodb # Host MongoDB
+
+            - name: MONGO_USER # Environtment variable untuk username MongoDB
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret # Secret key bernama mongodb-secret untuk credential MongoDB
+                  key: MONGO_ROOT_USERNAME # Kata kunci untuk username MongoDB di dalam secret key
+
+            - name: MONGO_PASS # Environtment variable untuk password MongoDB
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret # Secret key bernama mongodb-secret untuk credential MongoDB
+                  key: MONGO_ROOT_PASSWORD # Kata kunci untuk password MongoDB di dalam secret key
