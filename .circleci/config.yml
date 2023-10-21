@@ -4,6 +4,8 @@ jobs:
   karsajobs-ui:
     docker:
       - image: node:14
+    services:
+      - docker:dind # Aktifkan Docker executor
 
     steps:
       - checkout
