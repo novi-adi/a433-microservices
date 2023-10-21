@@ -4,14 +4,9 @@ jobs:
   karsajobs:
     docker:
       - image: golang:latest
-    services:
-      - docker:dind # Aktifkan Docker executor
 
     steps:
       - checkout
-
-      - setup_remote_docker:
-          version: 20.10.7
 
       - run:
           name: lint-dockerfile
