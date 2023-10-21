@@ -1,0 +1,34 @@
+version: 2.1
+
+jobs:
+  karsajobs-ui:
+    docker:
+      - image: node:14
+
+    steps:
+      - checkout
+
+      - run:
+          name: lint-dockerfile
+          command: |
+            curl -sL -o /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64
+            chmod +x /usr/local/bin/hadolint
+            hadolint Dockerfile
+
+      - run:
+          name: build-app-karsajobs-ui
+          command: |
+            # Build image Docker
+            docker build -t ghcr.io/novi-adi/novi-adi/karsajobs-ui:latest .
+            # Push image ke GitHub Packages
+            docker push ghcr.io/novi-adi/novi-adi/karsajobs-ui:latest
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - karsajobs-ui:
+          filters:
+            branches:
+              only:
+                - karsajobs-ui
