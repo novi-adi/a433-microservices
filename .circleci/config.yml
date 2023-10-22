@@ -4,10 +4,9 @@ jobs:
   karsajobs:
     # Konfigurasi job karsajobs
     docker:
-      # - image: golang:latest
+      - image: golang:latest
       # Menggunakan gambar Docker Golang:latest
       - image: docker:17.05.0-ce-git
-      - image: golang:latest
     resource_class:
       small
       # Menggunakan gambar Docker
