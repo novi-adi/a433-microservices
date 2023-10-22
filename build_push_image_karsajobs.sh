@@ -2,7 +2,7 @@
 
 # Perintah untuk memeriksa apakah Docker sudah terinstal
 if command -v docker &> /dev/null; then
-    echo "Docker is installed."
+    
     # Jika Docker terinstalasi, jalankan perintah docker build
     docker build -t novi-adi/karsajobs:latest .
 

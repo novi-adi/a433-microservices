@@ -6,6 +6,8 @@ jobs:
     docker:
       - image: golang:latest
       # Menggunakan gambar Docker Golang:latest
+      - image: docker:17.05.0-ce-git
+      # Menggunakan gambar Docker
 
     steps:
       - checkout
