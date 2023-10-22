@@ -1,0 +1,30 @@
+name: CI Pipeline Karsajobs
+on:
+  push:
+    branches:
+      - karsajobs
+
+jobs:
+  lint-dockerfile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+
+  test-app:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run unit tests
+        run: go test -v -short --count=1 $(go list ./...)
+
+  build-app-karsajobs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build and push Docker Image to Github Packages
+        env:
+          PASSWORD_DOCKER_HUB: ${{ secrets.PASSWORD_DOCKER_HUB }}
+        run: bash build_push_image_karsajobs.sh
