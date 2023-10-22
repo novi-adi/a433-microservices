@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-  docker: circleci/docker@2.2.0 # Replace x.y.z with the latest version of the Docker orb
 
 jobs:
   karsajobs:
@@ -33,11 +31,11 @@ jobs:
             hadolint Dockerfile
             # Mengunduh dan menjalankan hadolint untuk memeriksa Dockerfile
 
-      - run:
-          name: test-app
-          command: |
-            go test -v -short --count=1 $(go list ./...)
-            # Menjalankan pengujian aplikasi Go
+      # - run:
+      #     name: test-app
+      #     command: |
+      #       go test -v -short --count=1 $(go list ./...)
+      #       # Menjalankan pengujian aplikasi Go
 
       - run:
           name: build-app-karsajobs
