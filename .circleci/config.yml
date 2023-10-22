@@ -1,12 +1,20 @@
 version: 2.1
+
 jobs:
-  test_ci:
+  karsajobs:
+    # Konfigurasi job karsajobs
     docker:
+      - image: golang:latest
+      # Menggunakan gambar Docker Golang:latest
       - image: docker:17.05.0-ce-git
-    resource_class: small
+    resource_class:
+      small
+      # Menggunakan gambar Docker
 
     steps:
       - checkout
+        # Checkout kode sumber
+
       - setup_remote_docker:
           docker_layer_caching: true
           version: 20.10.12
@@ -18,40 +26,35 @@ jobs:
             curl -L "https://github.com/docker/compose/releases/download/v2.5.0/docker-compose-linux-x86_64" -o ~/docker-compose  
             chmod +x ~/docker-compose  
             mv ~/docker-compose /usr/local/bin/docker-compose
+            # Memperbarui paket Alpine dan mengunduh Docker Compose
+
+      - run:
+          name: lint-dockerfile
+          command: |
+            curl -sL -o /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64
+            chmod +x /usr/local/bin/hadolint
+            hadolint Dockerfile
+            # Mengunduh dan menjalankan hadolint untuk memeriksa Dockerfile
+
+      - run:
+          name: test-app
+          command: go test -v -short --count=1 $(go list ./...)
+          # Menjalankan pengujian aplikasi Go
 
       - run:
           name: Build test image
           command: |
             docker build -t tests .
 
-      - run:
-          name: Spin up database
-          command: |
-            docker-compose down -v   
-            docker-compose up -d
-
-      - run:
-          name: prepare database
-          command: |
-            while ! docker exec database mysql -e 'select 1=1' -proot test_db; do  
-              echo "waiting for database"  
-              sleep 2  
-            done  
-            docker cp test/resources/init.sql database:/init.sql  
-            docker exec database mysql -e 'source /init.sql' -proot test_db
-
-      - run:
-          name: testing
-          command: |
-            docker run --network container:database tests clj -M:circle-ci-test
-
-      - run:
-          name: tear-down
-          command: |
-            docker-compose down -v
+      # - run:
+      #     name: build-app-karsajobs
+      #     command: |
+      #       chmod +x build_push_image_karsajobs.sh
+      #       ./build_push_image_karsajobs.sh
+      #       # Menjalankan skrip untuk membangun dan mengunggah image Docker ke Github Packages
 
 workflows:
   version: 2
   build:
     jobs:
-      - test_ci
+      - karsajobs
