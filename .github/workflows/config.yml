@@ -1,0 +1,28 @@
+# Nama Pipeline CI untuk Karsajobs UI
+name: CI Pipeline Karsajobs UI
+
+# Pipeline CI akan dijalankan saat ada push ke branch "karsajobs-ui"
+on:
+  push:
+    branches:
+      - karsajobs-ui
+
+jobs:
+  # Job untuk lint Dockerfile
+  lint-dockerfile:
+    runs-on: ubuntu-latest # menjalankan ubuntu versi terbaru
+    steps:
+      - uses: actions/checkout@v3 # Checkout kode dari repositori
+      - uses: hadolint/hadolint-action@v3.1.0 # Gunakan Hadolint untuk melakukan lint Dockerfile
+        with:
+          dockerfile: Dockerfile # Tentukan file Dockerfile yang akan di-lint
+
+  # Job untuk build dan push Docker Image ke Github Packages
+  build-app-karsajobs-ui:
+    runs-on: ubuntu-latest # menjalankan ubuntu versi terbaru
+    steps:
+      - uses: actions/checkout@v3 # Checkout kode dari repositori
+      - name: Build and push Docker Image to Github Packages # nama untuk steps
+        env:
+          GHCR_PAT: ${{ secrets.GHCR_PAT }} # Mengambil personal access token (PAT) dari secrets github
+        run: bash build_push_image_karsajobs_ui.sh # Menjalankan skrip bash untuk build dan push Docker Image ke Github Packages
