@@ -26,5 +26,5 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build and push Docker Image to Github Packages
         env:
-          PASSWORD_DOCKER_HUB: ${{ secrets.PASSWORD_DOCKER_HUB }}
+          GHCR_PAT: ${{ secrets.GHCR_PAT }}
         run: bash build_push_image_karsajobs.sh
