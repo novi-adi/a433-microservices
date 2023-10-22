@@ -1,19 +1,27 @@
 #!/bin/bash
 
-# Perintah untuk membuat Docker image dari Dockerfile
-docker build -t novi-adi/karsajobs:latest .
+# Perintah untuk memeriksa apakah Docker sudah terinstal
+if command -v docker &> /dev/null; then
+    echo "Docker is installed."
+    # Jika Docker terinstalasi, jalankan perintah docker build
+    docker build -t novi-adi/karsajobs:latest .
 
-# Melihat daftar image di lokal
-docker images
+    # Melihat daftar image di lokal
+    docker images
 
-# Nama paket Docker yang akan digunakan di GitHub Packages
-DOCKER_PACKAGE="ghcr.io/novi-adi/novi-adi/karsajobs:latest"
+    # Nama paket Docker yang akan digunakan di GitHub Packages
+    DOCKER_PACKAGE="ghcr.io/novi-adi/novi-adi/karsajobs:latest"
 
-# Mengubah nama image agar sesuai dengan format GitHub Packages
-docker tag novi-adi/karsajobs:latest $DOCKER_PACKAGE
+    # Mengubah nama image agar sesuai dengan format GitHub Packages
+    docker tag novi-adi/karsajobs:latest $DOCKER_PACKAGE
 
-# Login ke GitHub Packages dengan token personal access (PAT)
-echo $GHCR_PAT | docker login ghcr.io -u novi-adi --password-stdin
+    # Login ke GitHub Packages dengan token personal access (PAT)
+    echo $GHCR_PAT | docker login ghcr.io -u novi-adi --password-stdin
 
-# Mengunggah image ke GitHub Packages
-docker image push $DOCKER_PACKAGE
+    # Mengunggah image ke GitHub Packages
+    docker image push $DOCKER_PACKAGE
+
+else
+    echo "Docker is not installed. Please install Docker before running this script."
+    exit 1
+fi
