@@ -7,9 +7,9 @@ jobs:
       # - image: golang:latest
       # Menggunakan gambar Docker Golang:latest
       - image: docker:17.05.0-ce-git
+      - image: golang:latest
     resource_class:
       small
-      - image: golang:latest
       # Menggunakan gambar Docker
 
     steps:
