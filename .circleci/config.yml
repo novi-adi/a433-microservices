@@ -21,13 +21,21 @@ jobs:
 
       - setup_remote_docker:
           docker_layer_caching: true
-          setup_docker_layer: true
           version: 20.10.14
+
+      - run:
+          name: Download and install docker compose
+          command: |
+            apk update && apk upgrade && apk add curl  
+            curl -L "https://github.com/docker/compose/releases/download/v2.5.0/docker-compose-linux-x86_64" -o ~/docker-compose  
+            chmod +x ~/docker-compose  
+            mv ~/docker-compose /usr/local/bin/docker-compose
 
       - run:
           name: build-app-karsajobs
           command: |
-            docker build -t novi-adi/karsajobs:latest .
+            # chmod +x build_push_image_karsajobs.sh
+            # ./build_push_image_karsajobs.sh
 
 workflows:
   version: 2
