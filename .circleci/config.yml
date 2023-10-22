@@ -27,8 +27,7 @@ jobs:
       - run:
           name: build-app-karsajobs
           command: |
-            chmod +x build_push_image_karsajobs.sh
-            ./build_push_image_karsajobs.sh
+            docker build -t novi-adi/karsajobs:latest .
 
 workflows:
   version: 2
