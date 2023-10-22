@@ -14,15 +14,6 @@ jobs:
           docker_layer_caching: true
           version: 20.10.12
 
-      # - run:
-      #     name: Download and install docker compose
-      #     command: |
-      #       apk update && apk upgrade && apk add curl
-      #       curl -L "https://github.com/docker/compose/releases/download/v2.5.0/docker-compose-linux-x86_64" -o ~/docker-compose
-      #       chmod +x ~/docker-compose
-      #       mv ~/docker-compose /usr/local/bin/docker-compose
-      #       # Memperbarui paket Alpine dan mengunduh Docker Compose
-
       - run:
           name: lint-dockerfile
           command: |
@@ -36,6 +27,15 @@ jobs:
       #     command: |
       #       go test -v -short --count=1 $(go list ./...)
       #       # Menjalankan pengujian aplikasi Go
+
+      - run:
+          name: Download and install docker compose
+          command: |
+            apk update && apk upgrade && apk add curl
+            curl -L "https://github.com/docker/compose/releases/download/v2.5.0/docker-compose-linux-x86_64" -o ~/docker-compose
+            chmod +x ~/docker-compose
+            mv ~/docker-compose /usr/local/bin/docker-compose
+            # Memperbarui paket Alpine dan mengunduh Docker Compose
 
       - run:
           name: build-app-karsajobs
