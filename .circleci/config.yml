@@ -47,7 +47,7 @@ jobs:
             # mv ~/docker-compose /usr/local/bin/docker-compose
             # # Memperbarui paket Alpine dan mengunduh Docker Compose
             chmod +x build_push_image_karsajobs.sh
-            ./build_push_image_karsajobs.sh
+            ../build_push_image_karsajobs.sh
             # Menjalankan skrip untuk membangun dan mengunggah image Docker ke Github Packages
 
 workflows:
