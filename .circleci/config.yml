@@ -4,7 +4,7 @@ jobs:
   karsajobs:
     # Konfigurasi job karsajobs
     docker:
-      - image: golang:latest
+      # - image: golang:latest
       # Menggunakan gambar Docker Golang:latest
       - image: docker:17.05.0-ce-git
     resource_class:
@@ -28,18 +28,18 @@ jobs:
             mv ~/docker-compose /usr/local/bin/docker-compose
             # Memperbarui paket Alpine dan mengunduh Docker Compose
 
-      # - run:
-      #     name: lint-dockerfile
-      #     command: |
-      #       curl -sL -o /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64
-      #       chmod +x /usr/local/bin/hadolint
-      #       hadolint Dockerfile
-      #       # Mengunduh dan menjalankan hadolint untuk memeriksa Dockerfile
+      - run:
+          name: lint-dockerfile
+          command: |
+            curl -sL -o /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64
+            chmod +x /usr/local/bin/hadolint
+            hadolint Dockerfile
+            # Mengunduh dan menjalankan hadolint untuk memeriksa Dockerfile
 
-      # - run:
-      #     name: test-app
-      #     command: go test -v -short --count=1 $(go list ./...)
-      #     # Menjalankan pengujian aplikasi Go
+      - run:
+          name: test-app
+          command: go test -v -short --count=1 $(go list ./...)
+          # Menjalankan pengujian aplikasi Go
 
       - run:
           name: Build test image
