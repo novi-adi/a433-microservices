@@ -4,7 +4,8 @@ jobs:
   karsajobs:
     # Konfigurasi job karsajobs
     docker:
-      - image: golang:latest
+      # - image: golang:latest
+      - image: cimg/go:1.17
 
     steps:
       - checkout
