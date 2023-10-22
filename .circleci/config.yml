@@ -5,8 +5,6 @@ jobs:
     # Konfigurasi job karsajobs
     docker:
       - image: golang:latest
-    services:
-      - docker:dind # Aktifkan Docker executor
 
     steps:
       - checkout
