@@ -52,22 +52,6 @@ jobs:
 
 workflows:
   version: 2
-  ci_tests:
+  build:
     jobs:
-      - test-circle-ci:
-          filters:
-            branches:
-              ignore: master
-
-  test-deploy:
-    jobs:
-      - test_ci:
-          filters:
-            branches:
-              only: master
-      - deploy:
-          requires:
-            - test_ci
-          filters:
-            branches:
-              only: master
+      - test_ci
