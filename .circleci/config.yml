@@ -4,16 +4,11 @@ jobs:
   karsajobs:
     # Konfigurasi job karsajobs
     docker:
-      # - image: golang:latest
-      - image: cimg/go:1.17
+      - image: golang:latest
 
     steps:
       - checkout
         # Checkout kode sumber
-
-      - setup_remote_docker:
-          docker_layer_caching: true
-          version: 20.10.12
 
       - run:
           name: lint-dockerfile
@@ -37,6 +32,10 @@ jobs:
             chmod +x ~/docker-compose
             mv ~/docker-compose /usr/local/bin/docker-compose
             # Memperbarui paket Alpine dan mengunduh Docker Compose
+
+      - setup_remote_docker:
+          docker_layer_caching: true
+          version: 20.10.12
 
       - run:
           name: build-app-karsajobs
