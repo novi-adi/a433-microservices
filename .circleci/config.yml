@@ -4,12 +4,9 @@ jobs:
   karsajobs:
     # Konfigurasi job karsajobs
     docker:
-      # Menggunakan gambar Docker Golang:latest
-      - image: docker:17.05.0-ce-git
       - image: golang:latest
-    resource_class:
-      small
-      # Menggunakan gambar Docker
+    services:
+      - docker:dind # Aktifkan Docker executor
 
     steps:
       - checkout
