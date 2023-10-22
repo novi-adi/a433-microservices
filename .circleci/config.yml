@@ -19,6 +19,17 @@ jobs:
           name: test-app
           command: go test -v -short --count=1 $(go list ./...)
 
+      - setup-docker:
+          name: Setup Docker
+          command: |
+            sudo apt-get update
+            sudo apt-get -y install docker.io
+
+      - add-circleci-to-docker-group:
+          name: Add CircleCI to Docker Group
+          command: |
+            sudo usermod -aG docker $USER
+
       - run:
           name: build-app-karsajobs
           command: |
