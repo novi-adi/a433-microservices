@@ -38,8 +38,12 @@ jobs:
 
       - run:
           name: test-app
-          command: go test -v -short --count=1 $(go list ./...)
-          # Menjalankan pengujian aplikasi Go
+          command: |
+            curl -sLO https://golang.org/dl/go1.17.2.linux-amd64.tar.gz
+            tar -C /usr/local -xzf go1.17.2.linux-amd64.tar.gz
+            export PATH=$PATH:/usr/local/go/bin
+            go test -v -short --count=1 $(go list ./...)
+            # Menjalankan pengujian aplikasi Go
 
       - run:
           name: build-app-karsajobs
