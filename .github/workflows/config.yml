@@ -1,30 +1,36 @@
+# Nama Pipeline CI
 name: CI Pipeline Karsajobs
+
+# Pipeline CI akan dijalankan saat ada push ke branch "karsajobs"
 on:
   push:
     branches:
       - karsajobs
 
 jobs:
+  # Job untuk menjalankan Dockerfile
   lint-dockerfile:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: hadolint/hadolint-action@v3.1.0
+      - uses: actions/checkout@v3 # Checkout kode dari repositori
+      - uses: hadolint/hadolint-action@v3.1.0 # Menggunakan Hadolint untuk melakukan linting Dockerfile
         with:
-          dockerfile: Dockerfile
+          dockerfile: Dockerfile # Menentukan file Dockerfile yang akan di-lint
 
+  # Job untuk menjalankan unit tests backend
   test-app:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Run unit tests
-        run: go test -v -short --count=1 $(go list ./...)
+      - uses: actions/checkout@v3 # Checkout kode dari repositori
+      - name: Run unit tests backend # nama untuk steps
+        run: go test -v -short --count=1 $(go list ./...) # Menjalankan unit tests untuk aplikasi backend Golang
 
+  # Job untuk build dan push Docker Image backend ke Github Packages
   build-app-karsajobs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Build and push Docker Image to Github Packages
+      - uses: actions/checkout@v3 # Checkout kode dari repositori
+      - name: Build and push Docker Image backend to Github Packages # nama untuk steps
         env:
-          GHCR_PAT: ${{ secrets.GHCR_PAT }}
-        run: bash build_push_image_karsajobs.sh
+          GHCR_PAT: ${{ secrets.GHCR_PAT }} # Mengambil personal access token (PAT) dari secrets github
+        run: bash build_push_image_karsajobs.sh # Menjalankan skrip bash untuk build dan push Docker Image ke Github Packages
