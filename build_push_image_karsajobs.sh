@@ -3,7 +3,7 @@
 # Perintah untuk memeriksa apakah Docker sudah terinstal
 if command -v docker &> /dev/null; then
     
-    # Jika Docker terinstalasi, jalankan perintah docker build
+    # Jika Docker sudah terinstalasi, jalankan perintah docker build
     docker build -t novi-adi/karsajobs:latest .
 
     # Melihat daftar image di lokal
@@ -22,6 +22,7 @@ if command -v docker &> /dev/null; then
     docker image push $DOCKER_PACKAGE
 
 else
+	# harap install docker terlebih dahulu
     echo "Docker is not installed. Please install Docker before running this script."
     exit 1
 fi
