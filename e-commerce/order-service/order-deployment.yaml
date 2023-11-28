@@ -1,0 +1,32 @@
+apiVersion: apps/v1 # Versi API dan jenis objek, dalam hal ini, Deployment.
+kind: Deployment # Jenis objek Kubernetes yang akan dibuat, dalam hal ini Deployment.
+
+metadata:
+  name: order # # Nama Deployment, disematkan pada pod yang dihasilkan.
+  labels: # Label untuk selektor pod.
+    app: order # Nama label app
+
+spec:
+  replicas: 1 # Jumlah replika pod yang akan dijalankan.
+
+  selector: # Selektor untuk menentukan pod yang akan diarahkan oleh Deployment.
+    matchLabels:
+      app: order # Selektor pod berdasarkan label app: order.
+
+  template: # Template untuk pod yang dihasilkan oleh Deployment.
+    metadata:
+      # Label pada metadata pod.
+      labels:
+        app: order # Menentukan template pod yang akan diatur oleh Deployment
+
+    spec: # Spesifikasi container dalam pod.
+      containers:
+        - name: order # Menentukan container dalam pod dengan nama "order"
+          image: ghcr.io/novi-adi/order-service:latest # Mengatur image Docker yang akan digunakan, diambil dari Github Packages
+          ports: # Daftar port yang di-ekspos oleh container.
+            - containerPort: 3000 # Port yang di-ekspos oleh container.
+          env: # Variabel env untuk konfigurasi port.
+            - name: PORT # Environtment variable untuk port aplikasi
+              value: '3000' # Port 3000
+            - name: AMQP_URL # Variabel env untuk URL RabbitMQ.
+              value: 'amqp://guest:guest@rabbitmq:5672' # URL koneksi untuk protokol Advanced Message Queuing Protocol (AMQP) yang mengarah ke server RabbitMQ

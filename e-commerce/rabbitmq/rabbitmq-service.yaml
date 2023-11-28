@@ -1,0 +1,18 @@
+apiVersion: v1 # Versi API Kubernetes yang digunakan (v1 dalam hal ini).
+kind: Service # Jenis objek Kubernetes yang akan dibuat, dalam hal ini Service.
+
+metadata:
+  name: rabbitmq-service # Metadata yang terkait dengan Service, seperti nama Service.
+
+spec:
+  ports: # Daftar port yang di-ekspos oleh Service.
+    - port: 5672 # Port AMQP (Advanced Message Queuing Protocol).
+      targetPort: 5672 # Port di dalam pod yang akan diarahkan oleh Service.
+      name: amqp # Nama port untuk referensi internal.
+
+    - port: 15672 # Port untuk antarmuka manajemen RabbitMQ.
+      targetPort: 15672 # Port di dalam pod yang akan diarahkan oleh Service.
+      name: management # Nama port untuk referensi internal.
+
+  selector:
+    app: rabbitmq # Selektor untuk menentukan pod yang akan diarahkan oleh Service.

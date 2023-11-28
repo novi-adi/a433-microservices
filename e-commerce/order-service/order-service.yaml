@@ -1,0 +1,20 @@
+apiVersion: v1 # Versi API Kubernetes yang digunakan (v1 dalam hal ini).
+kind: Service # Jenis objek Kubernetes yang akan dibuat, dalam hal ini Service.
+
+metadata:
+  name: order-service # Nama Service, dalam hal ini "order-service".
+  labels: # Label untuk Service, menyediakan metadata tambahan.
+    app: order   # Label aplikasi.
+    tier: backend  # Label tier atau lapisan backend.
+
+spec: # Spesifikasi (spec) dari Service.
+  type: NodePort # Jenis layanan, NodePort membuat layanan dapat diakses melalui port di node.
+
+  selector: # Selektor untuk menentukan pod yang akan diarahkan oleh Service.
+    app: order # Selektor pod berdasarkan label app: order.
+
+  ports: # Daftar port yang di-ekspos oleh Service.
+    - name: http-order # Nama port yang di-ekspos, dapat digunakan untuk referensi internal.
+      port: 3000 # Port yang di-ekspos oleh Service.
+      protocol: TCP # Protokol yang digunakan (TCP dalam hal ini).
+      targetPort: 3000 # Port di dalam pod yang akan diarahkan oleh Service.

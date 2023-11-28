@@ -1,0 +1,46 @@
+apiVersion: networking.istio.io/v1alpha3 # Versi API Istio VirtualService.
+kind: VirtualService # Jenis objek, dalam hal ini, VirtualService.
+
+metadata:
+  name: order-virtualservice # Nama VirtualService untuk layanan order.
+
+spec:
+  hosts: # Host yang akan diatur oleh VirtualService, "*" artinya semua host.
+  - "*"
+  
+  gateways: 
+  - ecommerce-gateway # Gateway yang akan digunakan oleh VirtualService.
+  
+  http: # Konfigurasi HTTP untuk VirtualService.
+  - match:
+    - uri:
+        exact: "/order" # Pencocokan URI yang tepat "/order".
+    route: # Rute yang akan diambil jika ada pencocokan.
+    - destination:
+        host: order-service # Host yang akan dituju.
+        port:
+          number: 3000 # Port pada host yang akan dituju.
+          
+---
+apiVersion: networking.istio.io/v1alpha3 # Versi API Istio VirtualService.
+kind: VirtualService # Jenis objek, dalam hal ini, VirtualService.
+
+metadata:
+  name: shipping-virtualservice # Nama VirtualService untuk layanan shipping.
+
+spec:
+  hosts: # Host yang akan diatur oleh VirtualService, "*" artinya semua host.
+  - "*"
+  
+  gateways: # Gateway atau pintu keluar yang akan digunakan oleh VirtualService.
+  - ecommerce-gateway
+  
+  http: # Konfigurasi HTTP untuk VirtualService.
+  - match:
+    - uri:
+        prefix: "/shipping" # Pencocokan URI dengan awalan "/shipping".
+    route: # Rute yang akan diambil jika ada pencocokan.
+    - destination:
+        host: shipping-service # Host yang akan dituju.
+        port:
+          number: 3001 # Port pada host yang akan dituju.

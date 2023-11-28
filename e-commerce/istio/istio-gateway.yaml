@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3 # Versi API Istio Gateway.
+kind: Gateway # Jenis objek, dalam hal ini, Gateway.
+
+metadata:
+  name: ecommerce-gateway # Nama Gateway untuk layanan ecommerce.
+
+spec:
+  selector:
+    istio: ingressgateway # Selektor untuk menentukan pod yang akan diatur oleh Gateway.
+
+  servers: # Konfigurasi server untuk Gateway.
+  - port:
+      number: 80 # Nomor port untuk Gateway.
+      name: http # Nama port untuk referensi internal.
+      protocol: HTTP # Protokol yang digunakan (HTTP dalam hal ini).
+
+    hosts:
+    - "*" # Daftar host yang akan ditangani oleh Gateway, "*" artinya semua host.

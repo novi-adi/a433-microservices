@@ -1,0 +1,48 @@
+apiVersion: apps/v1 # Versi API dan jenis objek, dalam hal ini, Deployment.
+kind: StatefulSet # Menentukan jenis objek Kubernetes yang dibuat, yaitu 'StatefulSet'.
+
+metadata:
+  name: rabbitmq # Bagian metadata, menetapkan nama untuk StatefulSet ini yaitu 'rabbitmq'.
+
+spec:
+  serviceName: 'rabbitmq-service' # Bagian spesifikasi: serviceName menetapkan nama layanan yang akan mengelola pod dalam StatefulSet.
+
+  replicas: 1 # Jumlah replika pod yang akan dijalankan.
+
+  selector:
+    matchLabels:
+      app: rabbitmq # Selector digunakan untuk menentukan bagaimana StatefulSet mengidentifikasi pod yang akan dikelolanya. Di sini, ia memilih pod dengan label 'app: rabbitmq'.
+
+  template:
+    metadata:
+      labels:
+        app: rabbitmq # Mendefinisikan template pod. Setiap pod yang dibuat oleh StatefulSet akan memiliki label 'app: rabbitmq'.
+
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:3.11-management # Bagian container di dalam template. Mendefinisikan container yang disebut 'rabbitmq' dan menggunakan image 'rabbitmq:3.11-management'.
+
+          ports:
+            - containerPort: 5672 # Mendefinisikan port yang terbuka di dalam container. Port 5672 (AMQP) dan 15672 (management interface) dibuka.
+              name: amqp
+            - containerPort: 15672
+              name: management
+
+          env:
+            - name: RABBIT # Bagian ini mendefinisikan variabel lingkungan untuk container. Contoh variabel lingkungan diawali dengan 'RABBIT'.
+
+          env:
+            - name: RABBITMQ_DEFAULT_USER # konfigurasi default user rabbitmq
+              value: 'guest'
+            - name: RABBITMQ_DEFAULT_PASS # konfigurasi default password rabbitmq
+              value: 'guest'
+
+  volumeClaimTemplates: # Bagian ini mendefinisikan 'volumeClaimTemplates' untuk StatefulSet. Ini digunakan untuk memberikan penyimpanan persisten ke pod dalam StatefulSet.
+    - metadata:
+        name: rabbitmq-data # 'metadata' dengan nama 'rabbitmq-data' menentukan nama PersistentVolumeClaim (PVC).
+      spec: # 'spec' mendefinisikan spesifikasi untuk PVC:
+        accessModes: ['ReadWriteOnce'] #   - 'accessModes' diatur ke ['ReadWriteOnce'], yang berarti volume dapat di-mount sebagai read-write oleh satu node. Ini adalah mode yang umum digunakan untuk penyimpanan pod tunggal.
+        resources:
+          requests:
+            storage: 10Gi #   - Dalam 'resources', 'requests' mendefinisikan permintaan penyimpanan, di sini diatur ke '10Gi', yang berarti setiap pod dalam StatefulSet akan meminta 10 GB penyimpanan persisten.
